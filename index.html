@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Games Hub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+    }
+    /* Banner Heading */
+    .banner {
+      width: 100%;
+      background: linear-gradient(90deg, #1a1a1a, #0f0f0f);
+      padding: 50px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 255, 200, 0.2);
+      margin-bottom: 50px;
+    }
+    .banner h1 {
+      font-size: 40px;
+      font-weight: 700;
+      color: #00ffcc;
+      text-shadow: 0 0 15px #00ffcc;
+      margin-bottom: 12px;
+    }
+    .banner p {
+      font-size: 18px;
+      color: #aaa;
+      opacity: 0.9;
+    }
+    .container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1000px;
+      padding: 0 20px 40px;
+    }
+    .game-card {
+      background: #1a1a1a;
+      width: 250px;
+      height: 200px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .game-card:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 30px rgba(0, 255, 200, 0.7);
+    }
+    .game-card h2 {
+      margin-bottom: 15px;
+      color: #00ffcc;
+      font-size: 28px;
+      text-align: center;
+    }
+    .game-card p {
+      font-size: 16px;
+      color: #aaa;
+      text-align: center;
+      padding: 0 10px;
+    }
+    .logout {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      color: #00ffcc;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .logout:hover {
+      transform: scale(1.2);
+      color: #ff3b3b;
+    }
+    .logout svg {
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 0 6px #00ffcc);
+    }
+  </style>
+</head>
+<body>
+  <div class="logout" onclick="logout()">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M10 3H5a2 2 0 0 0-2 2v14a2 
+      2 0 0 0 2 2h5v-2H5V5h5V3zm9.707 
+      8.293-3-3-1.414 1.414L16.586 
+      11H9v2h7.586l-1.293 1.293 
+      1.414 1.414 3-3a1 1 0 0 
+      0 0-1.414z"/>
+    </svg>
+  </div>
+
+  <div class="banner">
+    <h1>Mini Games Hub</h1>
+    <p>Play and enjoy simple games anytime!</p>
+  </div>
+
+  <div class="container">
+    <div class="game-card" onclick="openGame('games/game2048.html')">
+      <h2>2048</h2>
+      <p>Slide tiles to combine numbers</p>
+    </div>
+    <div class="game-card" onclick="openGame('games/tic-toc-toe.html')">
+      <h2>Tic Tac Toe</h2>
+      <p>Play Xs and Os against a friend</p>
+    </div>
+    <div class="game-card" onclick="openGame('games/typing.html')">
+      <h2>Typing Test</h2>
+      <p>Test your typing speed and accuracy</p>
+    </div>
+    <div class="game-card" onclick="openGame('games/minesweeper.html')">
+      <h2>Minesweeper</h2>
+      <p>Uncover tiles but avoid the hidden mines!</p>
+    </div>
+    <div class="game-card" onclick="openGame('games/battleship.html')">
+      <h2>Battleships</h2>
+      <p>Sink all enemy ships before they sink yours!</p>
+    </div>
+    <div class="game-card" onclick="openGame('games/cricket.html')">
+      <h2>Hand Cricket</h2>
+      <p>Play cricket with numbers against the computer</p>
+    </div>
+  </div>
+
+  <script>
+    function openGame(gameUrl) {
+      window.location.href = gameUrl;
+    }
+    function logout() {
+      window.location.replace("login.html");
+    }
+  </script>
+</body>
+</html>
