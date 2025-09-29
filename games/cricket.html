@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hand Cricket</title>
+  <style>
+    :root{
+      --bg:#0f0f0f;
+      --card:#1a1a1a;
+      --accent:#00ffcc;
+      --muted:#aaa;
+      --hit:#33ff99;
+      --danger:#ff4444;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:"Poppins",sans-serif;
+      background:var(--bg);
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .container{
+      width:920px;
+      max-width:96%;
+      background:var(--card);
+      padding:22px;
+      border-radius:14px;
+      box-shadow:0 0 30px rgba(0,255,204,0.08);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:18px;
+      align-items:start;
+    }
+
+    .left{ padding:8px 12px; }
+
+    h1{
+      color:var(--accent);
+      font-size:22px;
+      margin-bottom:12px;
+      text-shadow:0 0 8px var(--accent);
+    }
+
+    .panel{
+      background:rgba(255,255,255,0.02);
+      padding:14px;
+      border-radius:10px;
+      margin-bottom:12px;
+      box-shadow:inset 0 0 8px rgba(0,0,0,0.6);
+    }
+
+    .status{
+      font-weight:600;
+      font-size:16px;
+      color:#fff;
+      margin-bottom:8px;
+    }
+
+    .info-row{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+
+    .chip{
+      background:#0f0f0f88;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .controls{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+
+    .btn{
+      background:linear-gradient(135deg,var(--accent),#0099ff);
+      color:#000;
+      border:none;
+      padding:8px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+      box-shadow:0 6px 18px rgba(0,255,204,0.05);
+      transition:transform .14s ease;
+    }
+    .btn:active{transform:translateY(2px) scale(.995)}
+
+    .choice-grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:8px;
+    }
+
+    .choice{
+      background:#222;
+      border-radius:8px;
+      padding:12px 6px;
+      text-align:center;
+      font-size:18px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:inset 0 0 6px rgba(0,255,204,0.06);
+      transition:transform .12s ease, background .12s ease;
+      color:#fff;
+      user-select:none;
+    }
+    .choice:hover{transform:scale(1.06)}
+    .choice.disabled{opacity:.35;pointer-events:none}
+    .choice.hit{background:var(--hit);color:#000}
+    .choice.miss{background:var(--danger);color:#fff}
+    .right{ padding:12px; }
+    .scoreboard{ background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:14px; border-radius:10px; text-align:center; }
+
+    .scores{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
+    .player{ flex:1; padding:10px; border-radius:8px; background:rgba(0,0,0,0.3); }
+    .player h3{color:var(--accent);font-size:14px;margin-bottom:6px}
+    .big{ font-size:28px; font-weight:800; color:#fff; }
+    .small{ color:var(--muted); font-weight:700 }
+    .log{ margin-top:12px; max-height:260px; overflow:auto; padding:10px; background:#0b0b0b; border-radius:8px; border:1px solid rgba(255,255,255,0.02); font-size:14px; color:var(--muted); }
+    .footer{ margin-top:12px; display:flex; gap:8px; justify-content:space-between; align-items:center; }
+
+    .secondary{ background:transparent; color:var(--accent); border:1px solid rgba(0,255,204,0.08); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700; }
+
+    @media (max-width:860px){ .container{grid-template-columns:1fr; padding:18px} }
+  </style>
+  <script src="hand-cricket.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <h1>🤜🤛 Hand Cricket</h1>
+
+      <div class="panel">
+        <div class="status" id="statusText">Choose to Bat or Bowl to start</div>
+
+        <div class="info-row">
+          <div class="chip">Innings: <span id="innings">0</span></div>
+          <div class="chip">Player Runs: <b id="playerRuns">0</b></div>
+          <div class="chip">Computer Runs: <b id="compRuns">0</b></div>
+          <div class="chip">Target: <b id="target">-</b></div>
+        </div>
+
+        <div>
+          <div style="margin-top:8px; color:var(--muted)">Your action:</div>
+          <div class="controls" id="startControls">
+            <button class="btn" id="btnBat">Bat</button>
+            <button class="btn" id="btnBowl">Bowl</button>
+            <button class="secondary" id="btnAuto">Auto-mode: Computer bats</button>
+          </div>
+
+          <div id="choiceArea" style="display:none">
+            <div style="margin-top:10px;color:var(--muted)">Pick a number (1–6)</div>
+            <div class="choice-grid" id="choiceGrid">
+              <div class="choice" data-val="1">1</div>
+              <div class="choice" data-val="2">2</div>
+              <div class="choice" data-val="3">3</div>
+              <div class="choice" data-val="4">4</div>
+              <div class="choice" data-val="5">5</div>
+              <div class="choice" data-val="6">6</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel">
+        <div style="font-weight:700;color:var(--muted)">Last ball</div>
+        <div style="margin-top:10px;display:flex;gap:12px;align-items:center">
+          <div class="chip">You: <span id="lastPlayer">-</span></div>
+          <div class="chip">Comp: <span id="lastComp">-</span></div>
+          <div class="chip">Outcome: <span id="lastOutcome">-</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div style="font-weight:700;color:var(--muted)">Controls</div>
+        <div class="controls" style="margin-top:10px">
+          <button class="btn" id="btnRestart">Restart</button>
+          <button class="secondary" id="btnShow">Show Rules</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="right">
+      <div class="scoreboard panel">
+        <div style="font-size:16px;font-weight:800;color:var(--accent)">Scoreboard</div>
+
+        <div class="scores">
+          <div class="player">
+            <h3>Player</h3>
+            <div class="big" id="displayPlayer">0</div>
+            <div class="small">Runs</div>
+          </div>
+          <div class="player">
+            <h3>Computer</h3>
+            <div class="big" id="displayComp">0</div>
+            <div class="small">Runs</div>
+          </div>
+        </div>
+
+        <div class="log" id="gameLog">
+          <div><i>Game log will appear here...</i></div>
+        </div>
+
+        <div class="footer">
+          <div style="color:var(--muted)">Mode: <b id="modeLabel">Idle</b></div>
+          <div style="display:flex;gap:8px">
+            <button class="secondary" id="btnPeek">Peek My Role</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('btnShow').addEventListener('click', ()=>{
+      alert("Hand Cricket rules (implemented):\n\n1) Choose to Bat or Bowl to start.\n2) When batting you pick 1-6; computer bowls random 1-6. If numbers match -> wicket (innings ends).\n3) After innings 1, roles swap for innings 2.\n4) Chase target; higher runs after both innings wins.\n\nTip: Auto-mode toggles a convenience label; core gameplay is clicking choices for each ball.");
+    });
+  </script>
+</body>
+</html>

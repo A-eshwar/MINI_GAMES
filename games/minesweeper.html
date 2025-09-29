@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minesweeper</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #0f0f0f;
+      color: #eee;
+      margin: 0;
+    }
+
+    .game-container {
+      text-align: center;
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(10, 35px);
+      grid-template-rows: repeat(10, 35px);
+      gap: 3px;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .cell {
+      width: 35px;
+      height: 35px;
+      background: #222;
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background 0.2s ease;
+      box-shadow: inset 0 0 5px rgba(0,255,204,0.2);
+    }
+
+    .cell.revealed {
+      background: #111;
+      cursor: default;
+      box-shadow: inset 0 0 8px rgba(0,255,204,0.3);
+    }
+
+    .cell.mine {
+      background: #ff4444;
+      color: #fff;
+      text-shadow: 0 0 5px #ff0000;
+    }
+
+    .cell.flagged {
+      background: #444;
+      color: #ffd700;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ffd700;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background: linear-gradient(135deg, #00ffcc, #0099ff);
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 15px #00ffcc;
+    }
+  </style>
+  <script src="minesweeper.js" defer></script>
+</head>
+<body>
+  <div class="game-container">
+    <h1>💣 Minesweeper</h1>
+    <div id="board" class="board"></div>
+    <p id="status"></p>
+    <button onclick="initGame()">Restart Game</button>
+  </div>
+</body>
+</html>
